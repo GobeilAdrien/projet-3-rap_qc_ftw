@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Module d'API du jeu Quoridor
-""""""Test""""""
+
 Ce module permet d'interagir avec le serveur
 afin de pouvoir jouer contre un adversaire robotisé.
 

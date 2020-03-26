@@ -73,7 +73,7 @@ def test_api_jouer_partie():
         print(partie)
 
 
-"""
+
 import unittest
 import networkx as nx
 from quoridor import Quoridor
@@ -545,4 +545,4 @@ class TestQuoridor(unittest.TestCase):
         self.assertRaisesRegex(nx.exception.NetworkXError, "",
                             jeu3.placer_mur, 1, (3, 3), 'horizontal')
         self.assertRaisesRegex(nx.exception.NetworkXError, "",
-                            jeu3.placer_mur, 1, (4, 2), 'vertical')"""
+                            jeu3.placer_mur, 1, (4, 2), 'vertical')

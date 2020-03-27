@@ -10,7 +10,7 @@ Attributes:
 Functions:
     * lister_parties - Retourne la liste des parties reçus du serveur
     * initialiser_partie - Retourne un tuple constitué de l'identifiant
-                           de la partie et de l'état initial du jeu
+                        de la partie et de l'état initial du jeu
     * jouer_coup - Retourne un dictionnaire représentant l'état actuel du jeu
 """
 import requests

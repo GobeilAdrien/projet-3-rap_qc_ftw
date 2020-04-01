@@ -44,7 +44,18 @@ class Quoridor:
             QuoridorError: Le total des murs placés et plaçables n'est pas égal à 20.
             QuoridorError: La position d'un mur est invalide.
         """
-        pass
+        self.joueur1 = joueurs[0]
+        self.joueur2 = joueurs[1]
+        self.murs = murs
+        if str(self.joueur1) == self.joueur1:
+            self.gamestate = {'joueurs':
+            [{'nom': self.joueur1, 'murs': 10, 'pos': [5, 1]},
+                              {'nom': self.joueur2, 'murs': 10, 'pos': [5, 9]}],
+                              'murs': {'horizontaux': [], 'verticaux': []}}
+        else:
+            self.gamestate = {'joueurs':
+                              [self.joueur1, self.joueur2],
+                              'murs': {'horizontaux': [], 'verticaux': []}}
 
     def __str__(self):
         """Représentation en art ascii de l'état actuel de la partie.

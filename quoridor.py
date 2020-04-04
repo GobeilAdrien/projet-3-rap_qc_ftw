@@ -112,7 +112,40 @@ class Quoridor:
         Returns:
             str: La chaîne de caractères de la représentation.
         """
-        pass
+        nom1 = f'1={self.gamestate["joueurs"][0]["nom"]}, '
+        nom2 = f'2={self.gamestate["joueurs"][1]["nom"]}'
+        haut = f'Légende:' + nom1 + nom2 + '\n'
+        haut += '   -----------------------------------\n'
+        bas = '--|-----------------------------------\n'
+        bas += '  | 1   2   3   4   5   6   7   8   9'
+        liste_vide = []
+        for i in range(18, 1, -1):
+            style_damier_1 = list(f"{i//2} | .   .   .   .   .   .   .   .   . |")
+            style_damier_2 = list("  |                                   |")
+            if i%2 == 0:
+                liste_vide.append(style_damier_1)
+            else:
+                liste_vide.append(style_damier_2)
+        for i in range(2):
+            x = 18-2*self.gamestate["joueurs"][i]["pos"][1]
+            y = 4*self.gamestate["joueurs"][i]["pos"][0]
+            liste_vide[x][y] = f'{i+1}'
+        for i in range(len(self.gamestate["murs"]["horizontaux"])):
+            for j in range(7):
+                x = 19-2*self.gamestate["murs"]["horizontaux"][i][1]
+                y = 4*self.gamestate["murs"]["horizontaux"][i][0]+j-1
+                liste_vide[x][y] = '-'
+        for i in range(len(self.gamestate["murs"]["verticaux"])):
+            for j in range(3):
+                x = 18-2*self.gamestate["murs"]["verticaux"][i][1]-j
+                y = 4*self.gamestate["murs"]["verticaux"][i][0]-2
+                liste_vide[x][y] = '|'
+        damier = []
+        for ligne in liste_vide:
+            damier += ligne + ['\n']
+        milieu = ''.join(damier)
+
+        return haut + milieu + bas
 
     def déplacer_jeton(self, joueur, position):
         """Déplace un jeton.
@@ -128,7 +161,15 @@ class Quoridor:
             QuoridorError: La position est invalide (en dehors du damier).
             QuoridorError: La position est invalide pour l'état actuel du jeu.
         """
-        pass
+        if joueur != 1:
+            if joueur != 2:
+                raise QuoridorError('le numéro du joueur doit être 1 ou 2')
+
+        if position[0] > 9 or position[0] < 1 or position[1] > 9 or position[1] < 1:
+            raise QuoridorError('la position est invalide (en dehors du damier)')
+
+        nouvelle_position = list(position)
+        self.gamestate['joueurs'][joueur - 1]['pos'] = nouvelle_position
 
     def état_partie(self):
         """Produire l'état actuel de la partie.
@@ -160,7 +201,7 @@ class Quoridor:
             situe entre les lignes y-1 et y, et bloque les colonnes x et x+1. De même, un
             mur vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
         """
-        pass
+        return self.gamestate
 
     def jouer_coup(self, joueur):
         """Jouer un coup automatique pour un joueur.

@@ -51,8 +51,8 @@ class Quoridor:
         self.murs = murs
         if str(self.joueur1) == self.joueur1:
             self.gamestate = {'joueurs':
-            [{'nom': self.joueur1, 'murs': 10, 'pos': [5, 1]},
-                              {'nom': self.joueur2, 'murs': 10, 'pos': [5, 9]}],
+            [{'nom': self.joueur1, 'murs': 10, 'pos': (5, 1)},
+                              {'nom': self.joueur2, 'murs': 10, 'pos': (5, 9)}],
                               'murs': {'horizontaux': [], 'verticaux': []}}
         else:
             self.gamestate = {'joueurs':
@@ -62,16 +62,16 @@ class Quoridor:
         if isinstance(self.murs, dict):
             self.gamestate['murs'] = self.murs
 
-            for i in murs['verticaux']:
-                if i[0] < 2 or i[1] > 8:
+            for mur_x, mur_y in murs['verticaux']:
+                if mur_x < 2 or mur_y > 8:
                     raise QuoridorError("Position mur vertical invalide")
-                if i not in list(product(range(1, 10), repeat=2)):
+                if (mur_x, mur_y) not in list(product(range(1, 10), repeat=2)):
                     raise QuoridorError("Position mur vertical invalide")
             
-            for i in murs['horizontaux']:
-                if i[0] > 8 or i[1] < 2:
+            for mur_x, mur_y in murs['horizontaux']:
+                if mur_x > 8 or mur_y < 2:
                     raise QuoridorError("Position mur horizontal invalide")
-                if i not in list(product(range(1, 10), repeat=2)):
+                if (mur_x, mur_y) not in list(product(range(1, 10), repeat=2)):
                     raise QuoridorError("Position mur horizontal invalide")
 
             murs_dispos = joueurs[0].get('murs') + joueurs[1].get('murs')
@@ -162,15 +162,15 @@ class Quoridor:
             QuoridorError: La position est invalide (en dehors du damier).
             QuoridorError: La position est invalide pour l'état actuel du jeu.
         """
-        if joueur != 1:
-            if joueur != 2:
-                raise QuoridorError('le numéro du joueur doit être 1 ou 2')
+        if joueur not in [1, 2]:
+            raise QuoridorError('joueur invalide!')
 
         if position[0] > 9 or position[0] < 1 or position[1] > 9 or position[1] < 1:
-            raise QuoridorError('la position est invalide (en dehors du damier)')
+            raise QuoridorError('position invalide!')
 
-        nouvelle_position = list(position)
-        self.gamestate['joueurs'][joueur - 1]['pos'] = nouvelle_position
+        print(self.gamestate['joueurs'][joueur - 1]['pos'])
+
+        self.gamestate['joueurs'][joueur - 1]['pos'] = position
 
     def état_partie(self):
         """Produire l'état actuel de la partie.
@@ -218,6 +218,12 @@ class Quoridor:
             QuoridorError: Le numéro du joueur est autre que 1 ou 2.
             QuoridorError: La partie est déjà terminée.
         """
+        if joueur not in [1, 2]:
+            raise QuoridorError('joueur invalide!')
+
+        if self.partie_terminée():
+            raise QuoridorError('La partie est déjà terminée!')
+
         graphe = construire_graphe(
             [joueur['pos'] for joueur in self.gamestate['joueurs']],
             self.gamestate['murs']['horizontaux'],
@@ -287,11 +293,11 @@ class Quoridor:
         if self.gamestate['joueurs'][0]['pos'][1] == 9:
             return self.gamestate['joueurs'][0]["nom"]
         if self.gamestate['joueurs'][1]['pos'][1] == 1:
-            return self.gamestate['joueurs'[1]["nom"]
+            return self.gamestate['joueurs'][1]["nom"]
         return False
 
     def placer_mur(self, joueur: int, position: tuple, orientation: str):
-    """Placer un mur.
+        """Placer un mur.
         Pour le joueur spécifié, placer un mur à la position spécifiée.
         Args:
             joueur (int): le numéro du joueur (1 ou 2).
@@ -304,20 +310,19 @@ class Quoridor:
             QuoridorError: La position est invalide pour cette orientation.
             QuoridorError: Le joueur a déjà placé tous ses murs.
         """
-        if joueur != 1:
-            if joueur != 2:
-                raise QuoridorErreur('le numéro du joueur doit être 1 ou 2')
+        if joueur not in [1, 2]:
+            raise QuoridorError('joueur invalide!')
         
         if joueur == 1:
-            if self.gamestate['joueur'][0]['murs'] == 0:
-                raise QuoridorError('le joueur a déjà placé tous ses murs')
+            if self.gamestate['joueurs'][0]['murs'] == 0:
+                raise QuoridorError('le joueur ne peut plus placer de murs!')
 
         if joueur == 2:
-            if self.gamestate['joueur'][1]['murs'] == 0:
-                raise QuoridorError('le joueur a déjà placé tous ses murs')
+            if self.gamestate['joueurs'][1]['murs'] == 0:
+                raise QuoridorError('le joueur ne peut plus placer de murs!')
         
-        murs_horizontaux = self.gamestate['mur']['horizontaux']
-        murs_verticaux = self.gamestate['mur']['verticaux']
+        murs_horizontaux = self.gamestate['murs']['horizontaux']
+        murs_verticaux = self.gamestate['murs']['verticaux']
 
         # INTERDIT MURS HORIZONTAUX
         for i in murs_horizontaux:
@@ -335,11 +340,11 @@ class Quoridor:
 
         if orientation == 'horizontal':
             if position in self.position_interdite_horizontale:
-                raise QuoridorError('un mur occupe déjà cette position')
+                raise QuoridorError('Il y a déjà un mur!')
 
         if orientation == 'vertical':
             if position in self.position_interdite_verticale:
-                raise QuoridorError('un mur occupe déjà cette position')
+                raise QuoridorError('Il y a déjà un mur!')
 
         self.gamestate['joueurs'][joueur-1]['murs'] = self.gamestate['joueurs'][joueur-1]['murs']-1
         if orientation == 'horizontal':

@@ -81,9 +81,9 @@ from quoridor import QuoridorError
 
 
 class TestQuoridor(unittest.TestCase):
-    ""classe test quoridor""
+    """"classe test quoridor"""
     def test__init__(self):
-        ""test la fonction __init
+        """"test la fonction __init
             Cas à tester:
                 - Création d'une partie nouvelle
                 - Création d'une partie existante
@@ -93,7 +93,7 @@ class TestQuoridor(unittest.TestCase):
                 - QuoridorError si l'argument 'mur' n'est pas un dictionnaire si présent
                 - QuoridorError si le total des murs placés et plaçables n'est pas 20
                 - QuoridorError si la position d'un mur est invalide
-        ""
+        """
         # Dresser des rootaux connus pour des constructions connues
         nouveau_jeu = ("légende: 1=foo 2=bar\n" +
                         "   -----------------------------------\n" +
@@ -307,13 +307,13 @@ class TestQuoridor(unittest.TestCase):
                                     "verticaux": [(5, 9)]
                                 })
     def test_déplacer_jeton(self):
-        "" Test de la fonction déplacer_jeton
+        """" Test de la fonction déplacer_jeton
             Cas à tester:
                 - déplacement des deux joueurs fonctionne bien
                 - QuoridorError si le joueur indiqué est invalide
                 - QuoridorError si la position est hors des limites du jeu
                 - QuoridorError si la position n'est pas accessible au joueur
-        ""
+        """
         etat_partie = {
             "joueurs": [
                 {"nom": "joueur1", "murs": 7, "pos": (5, 6)},
@@ -382,10 +382,10 @@ class TestQuoridor(unittest.TestCase):
         jeu.déplacer_jeton(2, (6, 5))
         self.assertEqual(jeu.état_partie(), etat_partie3)
     def test_état_partie(self):
-        ""Test la fonction état_partie
+        """"Test la fonction état_partie
             Cas à tester:
                 - La fonction retourne le bon résultat
-        ""
+        """
         nouvelle_partie_etat = {
             "joueurs": [
                 {"nom": "joueur1", "murs": 10, "pos": (5, 1)},
@@ -399,12 +399,12 @@ class TestQuoridor(unittest.TestCase):
         nouvellepartie = Quoridor(["joueur1", "joueur2"])
         self.assertEqual(nouvellepartie.état_partie(), nouvelle_partie_etat)
     def test_jouer_coup(self):
-        ""Test la fonction jouer_coup
+        """"Test la fonction jouer_coup
             Cas à tester:
                 - La fonction joue le bon coup automatiquement
                 - QuoridorError si le numéro du joueur est invalide
                 - QuoridorError si la partie est déjà terminée
-        ""
+        """
         partie_terminee_etat = {
             "joueurs": [
                 {"nom": "joueur1", "murs": 7, "pos": (5, 9)},
@@ -427,11 +427,11 @@ class TestQuoridor(unittest.TestCase):
                             "La partie est déjà terminée!",
                             jeu_termine.jouer_coup, 1)
     def test_partie_terminée(self):
-        ""Test de la fonction partie_terminée
+        """"Test de la fonction partie_terminée
             Cas à tester:
                 - La fonction retourne False si la partie n'est pas terminée
                 - La fonction retourne le nom du joueur qui a gagné si la partie est terminée
-        ""
+        """
         partie_terminee1_etat = {
             "joueurs": [
                 {"nom": "joueur1", "murs": 7, "pos": (5, 9)},
@@ -459,14 +459,14 @@ class TestQuoridor(unittest.TestCase):
         jeu_fini2 = Quoridor(partie_terminee2_etat['joueurs'], partie_terminee2_etat['murs'])
         self.assertEqual(jeu_fini2.partie_terminée(), "joueur2")
     def test_placer_mur(self):
-        ""Test de la fonction placer_mur
+        """"Test de la fonction placer_mur
             Cas à tester:
                 - Les murs horizontaux et verticaux sont placés correctement
                 - QuoridorError si le numéro du joueur n'est pas bon
                 - QuoridorError si un mur occupe déjà la position
                 - QuoridorError si la position est invalide pour l'horientation
                 - QuoridorError si le joueur a déjà placé tous ses murs
-        ""
+        """
         jeu1_etat = {
             "joueurs": [
                 {"nom": "joueur1", "murs": 9, "pos": (5, 1)},

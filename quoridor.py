@@ -52,7 +52,7 @@ class Quoridor:
         if str(self.joueur1) == self.joueur1:
             self.gamestate = {'joueurs':
                               [{'nom': self.joueur1, 'murs': 10, 'pos': [5, 1]},
-                              {'nom': self.joueur2, 'murs': 10, 'pos': [5, 9]}],
+                               {'nom': self.joueur2, 'murs': 10, 'pos': [5, 9]}],
                               'murs': {'horizontaux': [], 'verticaux': []}}
         else:
             self.gamestate = {'joueurs':

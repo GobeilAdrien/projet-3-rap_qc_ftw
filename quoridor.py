@@ -4,7 +4,7 @@ import networkx as nx
 
 
 class QuoridorError(Exception):
-    '''Classe QuorridorError'''
+    """Classe QuorridorError"""
 
 class Quoridor:
     """Classe pour encapsuler le jeu Quoridor.
@@ -58,7 +58,7 @@ class Quoridor:
             self.gamestate = {'joueurs':
                               [self.joueur1, self.joueur2],
                               'murs': {'horizontaux': [], 'verticaux': []}}
-        
+
         if isinstance(self.murs, dict):
             self.gamestate['murs'] = self.murs
 
@@ -232,11 +232,14 @@ class Quoridor:
             graphe,
             tuple(self.gamestate['joueurs'][1]['pos']), 'B2')
 
+        # JOUER COUP
         if joueur == 1:
 
+            # SI LES MURS == 0
             if self.gamestate['joueurs'][0]['murs'] <= 0:
                 self.déplacer_jeton(joueur, position_a_aller_j1[1])
 
+            # SI LE CHEMIN EST PLUS COURT QUE L'ADVERSAIRE
             if len(position_a_aller_j1) <= len(position_a_aller_j2):
                 self.déplacer_jeton(joueur, position_a_aller_j1[1])
 
@@ -252,11 +255,14 @@ class Quoridor:
                     self.déplacer_jeton(joueur, position_a_aller_j1[1])
 
 
+        # JOUER COUP
         if joueur == 2:
 
+            # SI LES MURS == 0
             if self.gamestate['joueurs'][1]['murs'] <= 0:
                 self.déplacer_jeton(joueur, position_a_aller_j2[1])
 
+            # SI LE CHEMIN EST PLUS COURT QUE L'ADVERSAIRE
             if len(position_a_aller_j1) >= len(position_a_aller_j2):
                 self.déplacer_jeton(joueur, position_a_aller_j2[1])
 
@@ -270,14 +276,13 @@ class Quoridor:
                     self.gamestate['joueurs'][1]['murs'] -= 1
                 except QuoridorError:
                     self.gamestate['joueurs'][1]['murs'] += 1
-                    # self.jouer_coup(2)
                     self.déplacer_jeton(joueur, position_a_aller_j2[1])
 
 
     def partie_terminée(self):
-    """Déterminer si la partie est terminée.
-        Returns:
-            str/bool: Le nom du gagnant si la partie est terminée; False autrement.
+        """Déterminer si la partie est terminée.
+            Returns:
+                str/bool: Le nom du gagnant si la partie est terminée; False autrement.
         """
         if self.gamestate['joueurs'][0]['pos'][1] == 9:
             return self.gamestate['joueurs'][0]["nom"]
@@ -314,12 +319,14 @@ class Quoridor:
         murs_horizontaux = self.gamestate['mur']['horizontaux']
         murs_verticaux = self.gamestate['mur']['verticaux']
 
+        # INTERDIT MURS HORIZONTAUX
         for i in murs_horizontaux:
             self.position_interdite_horizontale.append((i[0] - 1, i[1]))
             self.position_interdite_horizontale.append((i[0], i[1]))
             self.position_interdite_horizontale.append((i[0] + 1, i[1]))
 
 
+        # INTERDIT MURS VERTICAUX
         for i in murs_verticaux:
             self.position_interdite_verticale.append((i[0], i[1] -1))
             self.position_interdite_verticale.append((i[0], i[1]))                     

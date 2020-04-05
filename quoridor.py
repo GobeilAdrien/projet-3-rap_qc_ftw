@@ -281,26 +281,35 @@ class Quoridor:
         return False
 
     def placer_mur(self, joueur: int, position: tuple, orientation: str):
-                                 
-        """Placer un mur.
-
-        Pour le joueur spécifié, placer un mur à la position spécifiée.
-
-        Args:
-            joueur (int): le numéro du joueur (1 ou 2).
-            position (tuple): le tuple (x, y) de la position du mur.
-            orientation (str): l'orientation du mur ('horizontal' ou 'vertical').
-
-        Raises:
-            QuoridorError: Le numéro du joueur est autre que 1 ou 2.
-            QuoridorError: Le numéro du joueur est autre que 1 ou 2.
-            QuoridorError: Un mur occupe déjà cette position.
-            QuoridorError: La position est invalide pour cette orientation.
-            QuoridorError: Le joueur a déjà placé tous ses murs.
-        """
-        pass
-
-
+        if joueur != 1:
+            if joueur != 2:
+                raise QuoridorErreur('le numéro du joueur doit être 1 ou 2')
+        
+        if joueur == 1:
+            if self.gamestate['joueur'][0]['murs'] == 0:
+                raise QuoridorError('le joueur a déjà placé tous ses murs')
+                                  
+        if joueur == 2:
+            if self.gamestate['joueur'][1]['murs'] == 0:
+                raise QuoridorError('le joueur a déjà placé tous ses murs')
+        
+        murs_horiz = self.gamestate['mur']['horizontaux']
+        murs_verti = self.gamestate['mur']['verticaux']
+        
+        # Interdits horiz
+        for i in murs_horiz:
+            self.position_interdites_horiz.append((i[0] - 1, i[1]))
+            self.position_interdites_horiz.append((i[0], i[1]))
+            self.position_interdites_horiz.append((i[0] + 1, i[1]))
+        
+                                  
+        # Interdit verti
+        for i in murs_verti:
+            self.position_interdites_verti.append((i[0], i[1] -1))
+            self.position_interdites_verti.append((i[0], i[1]))                     
+            self.position_interdites_verti.append((i[0], i[1] +1))
+           
+                                  
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
     """Construire un graphe de la grille.
 

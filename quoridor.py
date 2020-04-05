@@ -274,14 +274,14 @@ class Quoridor:
 
 
     def partie_terminée(self):
-        """Déterminer si la partie est terminée.
+        if self.gamestate['joueurs'][0]['pos'][1] == 9:
+            return self.gamestate['joueurs'][0]["nom"]
+        if self.gamestate['joueurs'][1]['pos'][1] == 1:
+            return self.gamestate['joueurs'[1]["nom"]
+        return False
 
-        Returns:
-            str/bool: Le nom du gagnant si la partie est terminée; False autrement.
-        """
-        pass
-
-    def placer_mur(self, joueur, position, orientation):
+    def placer_mur(self, joueur: int, position: tuple, orientation: str):
+                                 
         """Placer un mur.
 
         Pour le joueur spécifié, placer un mur à la position spécifiée.

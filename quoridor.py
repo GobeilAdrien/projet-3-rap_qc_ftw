@@ -274,6 +274,10 @@ class Quoridor:
 
 
     def partie_terminée(self):
+    """Déterminer si la partie est terminée.
+        Returns:
+            str/bool: Le nom du gagnant si la partie est terminée; False autrement.
+        """    
         if self.gamestate['joueurs'][0]['pos'][1] == 9:
             return self.gamestate['joueurs'][0]["nom"]
         if self.gamestate['joueurs'][1]['pos'][1] == 1:
@@ -281,6 +285,20 @@ class Quoridor:
         return False
 
     def placer_mur(self, joueur: int, position: tuple, orientation: str):
+    """Placer un mur.
+        Pour le joueur spécifié, placer un mur à la position spécifiée.
+        Args:
+            joueur (int): le numéro du joueur (1 ou 2).
+            position (tuple): le tuple (x, y) de la position du mur.
+            orientation (str): l'orientation du mur ('horizontal' ou 'vertical').
+        Raises:
+            QuoridorError: Le numéro du joueur est autre que 1 ou 2.
+            QuoridorError: Le numéro du joueur est autre que 1 ou 2.
+            QuoridorError: Un mur occupe déjà cette position.
+            QuoridorError: La position est invalide pour cette orientation.
+            QuoridorError: Le joueur a déjà placé tous ses murs.
+        """
+        pass                              
         if joueur != 1:
             if joueur != 2:
                 raise QuoridorErreur('le numéro du joueur doit être 1 ou 2')

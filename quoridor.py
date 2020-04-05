@@ -4,6 +4,7 @@ import networkx as nx
 
 
 class QuoridorError(Exception):
+    '''Classe QuorridorError'''
 
 class Quoridor:
     """Classe pour encapsuler le jeu Quoridor.
@@ -101,8 +102,8 @@ class Quoridor:
         if len(joueurs) > 2:
             raise QuoridorError("Plus de deux joueurs")
 
-        self.position_interdites_horiz = []
-        self.position_interdites_verti = []
+        self.position_interdite_horizontale = []
+        self.position_interdite_verticale = []
 
     def __str__(self):
         """Représentation en art ascii de l'état actuel de la partie.
@@ -251,7 +252,7 @@ class Quoridor:
                     self.déplacer_jeton(joueur, position_a_aller_j1[1])
 
 
-            if joueur == 2:
+        if joueur == 2:
 
             if self.gamestate['joueurs'][1]['murs'] <= 0:
                 self.déplacer_jeton(joueur, position_a_aller_j2[1])
@@ -277,7 +278,7 @@ class Quoridor:
     """Déterminer si la partie est terminée.
         Returns:
             str/bool: Le nom du gagnant si la partie est terminée; False autrement.
-        """    
+        """
         if self.gamestate['joueurs'][0]['pos'][1] == 9:
             return self.gamestate['joueurs'][0]["nom"]
         if self.gamestate['joueurs'][1]['pos'][1] == 1:
@@ -298,7 +299,6 @@ class Quoridor:
             QuoridorError: La position est invalide pour cette orientation.
             QuoridorError: Le joueur a déjà placé tous ses murs.
         """
-        pass                              
         if joueur != 1:
             if joueur != 2:
                 raise QuoridorErreur('le numéro du joueur doit être 1 ou 2')
@@ -306,28 +306,57 @@ class Quoridor:
         if joueur == 1:
             if self.gamestate['joueur'][0]['murs'] == 0:
                 raise QuoridorError('le joueur a déjà placé tous ses murs')
-                                  
+
         if joueur == 2:
             if self.gamestate['joueur'][1]['murs'] == 0:
                 raise QuoridorError('le joueur a déjà placé tous ses murs')
         
-        murs_horiz = self.gamestate['mur']['horizontaux']
-        murs_verti = self.gamestate['mur']['verticaux']
-        
-        # Interdits horiz
-        for i in murs_horiz:
-            self.position_interdites_horiz.append((i[0] - 1, i[1]))
-            self.position_interdites_horiz.append((i[0], i[1]))
-            self.position_interdites_horiz.append((i[0] + 1, i[1]))
-        
-                                  
-        # Interdit verti
-        for i in murs_verti:
-            self.position_interdites_verti.append((i[0], i[1] -1))
-            self.position_interdites_verti.append((i[0], i[1]))                     
-            self.position_interdites_verti.append((i[0], i[1] +1))
-           
-                                  
+        murs_horizontaux = self.gamestate['mur']['horizontaux']
+        murs_verticaux = self.gamestate['mur']['verticaux']
+
+        for i in murs_horizontaux:
+            self.position_interdite_horizontale.append((i[0] - 1, i[1]))
+            self.position_interdite_horizontale.append((i[0], i[1]))
+            self.position_interdite_horizontale.append((i[0] + 1, i[1]))
+
+
+        for i in murs_verticaux:
+            self.position_interdite_verticale.append((i[0], i[1] -1))
+            self.position_interdite_verticale.append((i[0], i[1]))                     
+            self.position_interdite_verticale.append((i[0], i[1] +1))
+
+
+        if orientation == 'horizontal':
+            if position in self.position_interdite_horizontale:
+                raise QuoridorError('un mur occupe déjà cette position')
+
+        if orientation == 'vertical':
+            if position in self.position_interdite_verticale:
+                raise QuoridorError('un mur occupe déjà cette position')
+
+        self.gamestate['joueurs'][joueur-1]['murs'] = self.gamestate['joueurs'][joueur-1]['murs']-1
+        if orientation == 'horizontal':
+            self.gamestate['murs']['horizontaux'].append(position)
+        if orientation == 'vertical':
+            self.gamestate['murs']['verticaux'].append(position)
+
+        for i in self.gamestate['murs']['verticaux']:
+            if i[0] < 2 or i[1] > 8:
+                self.gamestate['murs']['verticaux'].pop()
+                raise QuoridorError("Position mur vertical invalide")
+            if i not in list(product(range(1, 10), repeat=2)):
+                self.gamestate['murs']['verticaux'].pop()
+                raise QuoridorError("Position mur vertical invalide")
+
+        for i in self.gamestate['murs']['horizontaux']:
+            if i[0] > 8 or i[1] < 2:
+                self.gamestate['murs']['horizontaux'].pop()
+                raise QuoridorError("Position mur horizontal invalide")
+            if i not in list(product(range(1, 10), repeat=2)):
+                self.gamestate['murs']['horizontaux'].pop()
+                raise QuoridorError("Position mur horizontal invalide")
+
+# FONCTION FOURNIE
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
     """Construire un graphe de la grille.
 

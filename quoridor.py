@@ -567,7 +567,9 @@ class Quoridor:
         if orientation == 'horizontal':
             self.gamestate['murs']['horizontaux'].append(position)
         if orientation == 'vertical':
-            self.gamestate['murs']['verticaux'].append(position)
+            self.g
+
+# Test merge fixamestate['murs']['verticaux'].append(position)
 
         for i in self.gamestate['murs']['verticaux']:
             if i[0] < 2 or i[1] > 8:

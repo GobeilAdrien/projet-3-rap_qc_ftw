@@ -81,9 +81,9 @@ from quoridor import QuoridorError
 
 
 class TestQuoridor(unittest.TestCase):
-    ""classe test quoridor""
+    """classe test quoridor"""
     def test__init__(self):
-        ""test la fonction __init
+        """test la fonction __init
             Cas à tester:
                 - Création d'une partie nouvelle
                 - Création d'une partie existante
@@ -93,7 +93,7 @@ class TestQuoridor(unittest.TestCase):
                 - QuoridorError si l'argument 'mur' n'est pas un dictionnaire si présent
                 - QuoridorError si le total des murs placés et plaçables n'est pas 20
                 - QuoridorError si la position d'un mur est invalide
-        ""
+        """
         # Dresser des rootaux connus pour des constructions connues
         nouveau_jeu = ("légende: 1=foo 2=bar\n" +
                         "   -----------------------------------\n" +

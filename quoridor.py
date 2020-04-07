@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Programme permettant d'utiliser l'intelligence artificielle"""
 import random
 from itertools import product

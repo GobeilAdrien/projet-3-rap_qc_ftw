@@ -316,7 +316,7 @@ class Quoridor:
                 raise QuoridorError('le joueur a déjà placé tous ses murs')
 
         self.__vérifier_placer_mur_vertical(position, orientation)
-        self.__vérifier_placer_mur_horizontal(position, orientation)
+        self._vérifier_placer_mur_horizontal(position, orientation)
 
         self.gamestate['joueurs'][joueur-1]['murs'] -= 1
 
@@ -341,7 +341,7 @@ class Quoridor:
                 self.gamestate['murs']['verticaux'].pop()
                 raise QuoridorError("Position mur vertical invalide")
 
-    def __vérifier_placer_mur_horizontal(self, position: tuple, orientation: str):
+    def _vérifier_placer_mur_horizontal(self, position: tuple, orientation: str):
         murs_horizontaux = self.gamestate['murs']['horizontaux']
 
         for i in murs_horizontaux:

@@ -52,7 +52,7 @@ class Quoridor:
         self.murs = murs
         self.position_interdite_horizontale = []
         self.position_interdite_verticale = []
-        self.__vérifier_murs()
+        self._vérifier_murs()
 
         if isinstance(joueurs[0], dict):
             for i in range(2):
@@ -73,7 +73,7 @@ class Quoridor:
         if len(joueurs) > 2:
             raise QuoridorError("Plus de deux joueurs")
 
-    def __vérifier_murs(self):
+    def _vérifier_murs(self):
         if str(self.joueur1) == self.joueur1:
             self.gamestate = {'joueurs':
                               [{'nom': self.joueur1, 'murs': 10, 'pos': (5, 1)},
@@ -315,12 +315,12 @@ class Quoridor:
             if self.gamestate['joueurs'][1]['murs'] == 0:
                 raise QuoridorError('le joueur a déjà placé tous ses murs')
 
-        self.__vérifier_placer_mur_vertical(position, orientation)
+        self._vérifier_placer_mur_vertical(position, orientation)
         self._vérifier_placer_mur_horizontal(position, orientation)
 
         self.gamestate['joueurs'][joueur-1]['murs'] -= 1
 
-    def __vérifier_placer_mur_vertical(self, position: tuple, orientation: str):
+    def _vérifier_placer_mur_vertical(self, position: tuple, orientation: str):
         murs_verticaux = self.gamestate['murs']['verticaux']
 
         for i in murs_verticaux:

@@ -1,7 +1,7 @@
 """ Programme permettant d'utiliser l'intelligence artificielle"""
 import random
 from itertools import product
-import networkx as nx 
+import networkx as nx
 
 
 class QuoridorError(Exception):
@@ -46,13 +46,12 @@ class Quoridor:
             QuoridorError: L'argument 'murs' n'est pas un dictionnaire lorsque présent.
             QuoridorError: Le total des murs placés et plaçables n'est pas égal à 20.
             QuoridorError: La position d'un mur est invalide.
-        """ 
+        """
         self.joueur1 = joueurs[0]
         self.joueur2 = joueurs[1]
         self.murs = murs
         self.position_interdite_horizontale = []
         self.position_interdite_verticale = []
-
         self.__vérifier_murs()
 
         if isinstance(joueurs[0], dict):
@@ -332,7 +331,6 @@ class Quoridor:
         if orientation == 'vertical':
             if position in self.position_interdite_verticale:
                 raise QuoridorError('un mur occupe déjà cette position')
-            
             self.gamestate['murs']['verticaux'].append(position)
 
         for i in self.gamestate['murs']['verticaux']:

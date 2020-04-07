@@ -307,13 +307,13 @@ class TestQuoridor(unittest.TestCase):
                                     "verticaux": [(5, 9)]
                                 })
     def test_déplacer_jeton(self):
-        "" Test de la fonction déplacer_jeton
+        """ Test de la fonction déplacer_jeton
             Cas à tester:
                 - déplacement des deux joueurs fonctionne bien
                 - QuoridorError si le joueur indiqué est invalide
                 - QuoridorError si la position est hors des limites du jeu
                 - QuoridorError si la position n'est pas accessible au joueur
-        ""
+        """
         etat_partie = {
             "joueurs": [
                 {"nom": "joueur1", "murs": 7, "pos": (5, 6)},

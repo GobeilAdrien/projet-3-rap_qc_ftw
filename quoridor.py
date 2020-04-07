@@ -352,7 +352,6 @@ class Quoridor:
         if orientation == 'horizontal':
             if position in self.position_interdite_horizontale:
                 raise QuoridorError('un mur occupe déjà cette position')
-
             self.gamestate['murs']['horizontaux'].append(position)
 
         for i in self.gamestate['murs']['horizontaux']:

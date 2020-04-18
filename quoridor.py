@@ -125,7 +125,7 @@ class Quoridor:
         haut = f'Légende:' + nom1 + nom2 + '\n'
         haut += '   -----------------------------------\n'
         bas = '--|-----------------------------------\n'
-        bas += '  | 1   2   3   4   5   6   7   8   9'
+        bas += '  | 1   2   3   4   5   6   7   8   9\n'
         liste_vide = []
         for i in range(18, 1, -1):
             style_damier_1 = list(f"{i//2} | .   .   .   .   .   .   .   .   . |")

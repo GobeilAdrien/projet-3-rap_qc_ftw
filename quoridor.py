@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """ Programme permettant d'utiliser l'intelligence artificielle"""
-import random
-from itertools import product
 import networkx as nx
 
 
@@ -48,69 +46,71 @@ class Quoridor:
             QuoridorError: Le total des murs placés et plaçables n'est pas égal à 20.
             QuoridorError: La position d'un mur est invalide.
         """
-        self.joueur1 = joueurs[0]
-        self.joueur2 = joueurs[1]
-        self.murs = murs
-        self.position_interdite_horizontale = []
-        self.position_interdite_verticale = []
-        self._vérifier_murs()
-
-        if isinstance(joueurs[0], dict):
-            for i in range(2):
-                if joueurs[i]['murs'] < 0 or joueurs[i]['murs'] > 10:
-                    raise QuoridorError("Nombre de murs qu'un joueur peut placer invalide")
-
-            for i in range(2):
-                if joueurs[i]['pos'] not in list(product(range(1, 10), repeat=2)):
-                    raise QuoridorError("Position du joueur invalide")
-
-            if murs is None:
-                if joueurs[0]['murs'] + joueurs[1]['murs'] != 20:
-                    raise QuoridorError("Le total des murs placés et plaçables n'est pas égal à 20")
-
-        if not hasattr(joueurs, '__iter__'):
-            raise QuoridorError("Argument joueurs n'est pas un itérable")
-
-        if len(joueurs) > 2:
-            raise QuoridorError("Plus de deux joueurs")
-
-        if len(joueurs) < 2:
-            raise QuoridorError("Moins de deux joueurs")
-
-    def _vérifier_murs(self):
-        if str(self.joueur1) == self.joueur1:
-            self.gamestate = {'joueurs':
-                              [{'nom': self.joueur1, 'murs': 10, 'pos': (5, 1)},
-                               {'nom': self.joueur2, 'murs': 10, 'pos': (5, 9)}],
-                              'murs': {'horizontaux': [], 'verticaux': []}}
+        self.joueurs = joueurs
+        if murs is None:
+            self.murs = {}
         else:
-            self.gamestate = {'joueurs':
-                              [self.joueur1, self.joueur2],
-                              'murs': {'horizontaux': [], 'verticaux': []}}
-
-        if isinstance(self.murs, dict):
-            self.gamestate['murs'] = self.murs
-
-            for mur in self.murs['verticaux']:
-                if mur[0] < 2 or mur[1] > 8:
-                    raise QuoridorError("Position mur vertical invalide")
-                if mur not in list(product(range(1, 10), repeat=2)):
-                    raise QuoridorError("Position mur vertical invalide")
-
-            for mur in self.murs['horizontaux']:
-                if mur[0] > 8 or mur[1] < 2:
-                    raise QuoridorError("Position mur horizontal invalide")
-                if mur not in list(product(range(1, 10), repeat=2)):
-                    raise QuoridorError("Position mur horizontal invalide")
-
-            murs_dispos = self.joueur1.get('murs') + self.joueur2.get('murs')
-            murs_placés = len(self.murs['horizontaux']) + len(self.murs['verticaux'])
-            if murs_dispos + murs_placés != 20:
-                raise QuoridorError("Le total des murs placés et plaçables n'est pas égal à 20")
-
+            self.murs = murs
+        try:
+            self.joueurs_iter = iter(self.joueurs)
+        except QuoridorError:
+            print("L'argument joueur n'est pas itérable.")
+        if len(self.joueurs) != 2:
+            raise QuoridorError("L'itérable de joueurs ne contient pas deux joueurs.")
+        if not isinstance(self.murs, dict):
+            raise QuoridorError("L'argument murs n'est pas un dictionnaire.")
+        if isinstance(self.joueurs[0], dict) and self.murs != {}:
+            if 0 < self.joueurs[0]['murs'] > 10 or\
+                0 < self.joueurs[1]['murs'] > 10:
+                raise QuoridorError("Nombre de murs invalide.")
+            if (self.joueurs[0]['murs'] + self.joueurs[1]['murs']\
+                + len(self.murs['horizontaux']) + \
+                    len(self.murs['verticaux'])) != 20:
+                raise QuoridorError("Le dictionnaire contient trop de murs.")
+            self.position1 = joueurs[0]['pos']
+            self.position2 = joueurs[1]['pos']
+            for i in self.position1:
+                if not 1 <= i <= 9:
+                    raise QuoridorError("Position invalide.")
+            for j in self.position2:
+                if not 1 <= j <= 9:
+                    raise QuoridorError("Position invalide.")
+            self.murs_h = murs["horizontaux"]
+            self.murs_v = murs["verticaux"]
+            for m in self.murs_h:
+                if not 1 <= m[0] <= 8:
+                    raise QuoridorError("Emplacement de mur invalide.")
+                if not 2 <= m[1] <= 9:
+                    raise QuoridorError("Emplacement de mur invalide.")
+            for k in self.murs_v:
+                if not 2 <= k[0] <= 9:
+                    raise QuoridorError("Emplacement de mur invalide.")
+                if not 1 <= k[1] <= 8:
+                    raise QuoridorError("Emplacement de mur invalide.")
+        if not isinstance(self.joueurs[0], dict):
+            self.joueur1 = joueurs[0]
+            self.joueur2 = joueurs[1]
+            self.murs_j1 = 10
+            self.murs_j2 = 10
+            self.position1 = (5, 1)
+            self.position2 = (5, 9)
+            self.murs_h = []
+            self.murs_v = []
+            self.gamestate = {'joueurs': [{'nom': self.joueur1, 'murs':self.murs_j1, \
+                'pos':self.position1}, {'nom':self.joueur2, \
+                    'murs':self.murs_j2, 'pos':self.position2}], \
+                        'murs':{'horizontaux': self.murs_h, 'verticaux': self.murs_v}}
         else:
-            if self.murs is not None:
-                raise QuoridorError("L'argument murs n'est pas un dictionnaire")
+            self.joueur1 = joueurs[0]['nom']
+            self.joueur2 = joueurs[1]['nom']
+            self.murs_j1 = joueurs[0]['murs']
+            self.murs_j2 = joueurs[1]['murs']
+            self.murs_h = murs["horizontaux"]
+            self.murs_v = murs["verticaux"]
+            self.gamestate = {"joueurs": [{'nom': self.joueur1, 'murs': self.murs_j1, \
+                'pos': self.position1}, {"nom": self.joueur2, \
+                    "murs": self.murs_j2, "pos": self.position2}], \
+                        "murs": {"horizontaux": self.murs_h, "verticaux": self.murs_v}}
 
     def __str__(self):
         """Représentation en art ascii de l'état actuel de la partie.

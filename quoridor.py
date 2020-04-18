@@ -69,10 +69,13 @@ class Quoridor:
                     raise QuoridorError("Le total des murs placés et plaçables n'est pas égal à 20")
 
         if not hasattr(joueurs, '__iter__'):
-            raise QuoridorError("Argument joueurs n'est pas itérable")
+            raise QuoridorError("Argument joueurs n'est pas un itérable")
 
         if len(joueurs) > 2:
             raise QuoridorError("Plus de deux joueurs")
+
+        if len(joueurs) < 2:
+            raise QuoridorError("Moins de deux joueurs")
 
     def _vérifier_murs(self):
         if str(self.joueur1) == self.joueur1:

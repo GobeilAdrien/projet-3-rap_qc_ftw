@@ -10,13 +10,13 @@ class Quoridor:
     """Classe pour encapsuler le jeu Quoridor.
 
     Attributes:
-        état (dict): état du jeu tenu à jour.
+        gamestate (dict): état du jeu tenu à jour.
         TODO: Identifiez les autres attribut de votre classe
 
     Examples:
         >>> q.Quoridor()
     """
-    def __init__(self, joueurs, murs=None):
+    def __init__(self, joueurs, murs={}):
         """Constructeur de la classe Quoridor.
 
         Initialise une partie de Quoridor avec les joueurs et les murs spécifiés,
@@ -46,26 +46,23 @@ class Quoridor:
             QuoridorError: Le total des murs placés et plaçables n'est pas égal à 20.
             QuoridorError: La position d'un mur est invalide.
         """
-        self.joueurs = joueurs
-        if murs is None:
-            self.murs = {}
-        else:
-            self.murs = murs
+
         try:
-            self.joueurs_iter = iter(self.joueurs)
+            iter(joueurs)
         except QuoridorError:
             print("L'argument joueur n'est pas itérable.")
-        if len(self.joueurs) != 2:
+            
+        if len(joueurs) != 2:
             raise QuoridorError("L'itérable de joueurs ne contient pas deux joueurs.")
-        if not isinstance(self.murs, dict):
+        if not isinstance(murs, dict):
             raise QuoridorError("L'argument murs n'est pas un dictionnaire.")
-        if isinstance(self.joueurs[0], dict) and self.murs != {}:
-            if 0 < self.joueurs[0]['murs'] > 10 or\
-                0 < self.joueurs[1]['murs'] > 10:
+        if isinstance(joueurs[0], dict) and murs != {}:
+            if 0 < joueurs[0]['murs'] > 10 or\
+                0 < joueurs[1]['murs'] > 10:
                 raise QuoridorError("Nombre de murs invalide.")
-            if (self.joueurs[0]['murs'] + self.joueurs[1]['murs']\
-                + len(self.murs['horizontaux']) + \
-                    len(self.murs['verticaux'])) != 20:
+            if (joueurs[0]['murs'] + joueurs[1]['murs']\
+                + len(murs['horizontaux']) + \
+                    len(murs['verticaux'])) != 20:
                 raise QuoridorError("Le dictionnaire contient trop de murs.")
             self.position1 = joueurs[0]['pos']
             self.position2 = joueurs[1]['pos']
@@ -75,42 +72,38 @@ class Quoridor:
             for j in self.position2:
                 if not 1 <= j <= 9:
                     raise QuoridorError("Position invalide.")
-            self.murs_h = murs["horizontaux"]
-            self.murs_v = murs["verticaux"]
-            for m in self.murs_h:
+            murs_h = murs["horizontaux"]
+            murs_v = murs["verticaux"]
+            for m in murs_h:
                 if not 1 <= m[0] <= 8:
                     raise QuoridorError("Emplacement de mur invalide.")
                 if not 2 <= m[1] <= 9:
                     raise QuoridorError("Emplacement de mur invalide.")
-            for k in self.murs_v:
+            for k in murs_v:
                 if not 2 <= k[0] <= 9:
                     raise QuoridorError("Emplacement de mur invalide.")
                 if not 1 <= k[1] <= 8:
                     raise QuoridorError("Emplacement de mur invalide.")
-        if not isinstance(self.joueurs[0], dict):
-            self.joueur1 = joueurs[0]
-            self.joueur2 = joueurs[1]
+        if not isinstance(joueurs[0], dict):
             self.murs_j1 = 10
             self.murs_j2 = 10
             self.position1 = (5, 1)
             self.position2 = (5, 9)
-            self.murs_h = []
-            self.murs_v = []
-            self.gamestate = {'joueurs': [{'nom': self.joueur1, 'murs':self.murs_j1, \
-                'pos':self.position1}, {'nom':self.joueur2, \
+            murs_h = []
+            murs_v = []
+            self.gamestate = {'joueurs': [{'nom': joueurs[0], 'murs':self.murs_j1, \
+                'pos':self.position1}, {'nom': joueurs[1], \
                     'murs':self.murs_j2, 'pos':self.position2}], \
-                        'murs':{'horizontaux': self.murs_h, 'verticaux': self.murs_v}}
+                        'murs':{'horizontaux': murs_h, 'verticaux': murs_v}}
         else:
-            self.joueur1 = joueurs[0]['nom']
-            self.joueur2 = joueurs[1]['nom']
             self.murs_j1 = joueurs[0]['murs']
             self.murs_j2 = joueurs[1]['murs']
-            self.murs_h = murs["horizontaux"]
-            self.murs_v = murs["verticaux"]
-            self.gamestate = {"joueurs": [{'nom': self.joueur1, 'murs': self.murs_j1, \
-                'pos': self.position1}, {"nom": self.joueur2, \
+            murs_h = murs["horizontaux"]
+            murs_v = murs["verticaux"]
+            self.gamestate = {"joueurs": [{'nom': joueurs[0]['nom'], 'murs': self.murs_j1, \
+                'pos': self.position1}, {"nom": joueurs[1]['nom'], \
                     "murs": self.murs_j2, "pos": self.position2}], \
-                        "murs": {"horizontaux": self.murs_h, "verticaux": self.murs_v}}
+                        "murs": {"horizontaux": murs_h, "verticaux": murs_v}}
 
     def __str__(self):
         """Représentation en art ascii de l'état actuel de la partie.
@@ -295,9 +288,9 @@ class Quoridor:
         """
         for i in range(9):
             if self.position1 == [i+1, 9]:
-                return self.joueur1
+                return self._joueur1()['nom']
             if self.position2 == [i+1, 1]:
-                return self.joueur2
+                return self._joueur2()['nom']
         return False
 
     def placer_mur(self, joueur: int, position: tuple, orientation: str):
@@ -315,6 +308,9 @@ class Quoridor:
             QuoridorError: Le joueur a déjà placé tous ses murs.
         """
         pos = list(position)
+        murs_v = self._murs_v()
+        murs_h = self._murs_h()
+
         if joueur not in (1, 2):
             raise QuoridorError("Le numéro du joueur spécifié n'existe pas.")
         if orientation == 'horizontal':
@@ -346,11 +342,11 @@ class Quoridor:
                 raise QuoridorError("Aucun mur disponible.")
             self.murs_j1 -= 1
             if orientation == 'horizontal':
-                self.murs_h.append(tuple(pos))
+                murs_h.append(tuple(pos))
             if orientation == 'vertical':
-                self.murs_v.append(tuple(pos))
-            self.gamestate['murs']['horizontaux'] = self.murs_h
-            self.gamestate['murs']['verticaux'] = self.murs_v
+                murs_v.append(tuple(pos))
+            self.gamestate['murs']['horizontaux'] = murs_h
+            self.gamestate['murs']['verticaux'] = murs_v
             self.gamestate['joueurs'][0]['murs'] = self.murs_j1
             état = self.gamestate
             graphe = construire_graphe([joueur['pos'] for joueur in état['joueurs']], \
@@ -364,11 +360,11 @@ class Quoridor:
                 raise QuoridorError("Aucun mur disponible.")
             self.murs_j2 -= 1
             if orientation == 'horizontal':
-                self.murs_h.append(tuple(pos))
+                murs_h.append(tuple(pos))
             if orientation == 'vertical':
-                self.murs_v.append(tuple(pos))
-            self.gamestate['murs']['horizontaux'] = self.murs_h
-            self.gamestate['murs']['verticaux'] = self.murs_v
+                murs_v.append(tuple(pos))
+            self.gamestate['murs']['horizontaux'] = murs_h
+            self.gamestate['murs']['verticaux'] = murs_v
             self.gamestate['joueurs'][1]['murs'] = self.murs_j2
             état = self.gamestate
             graphe = construire_graphe([joueur['pos'] for joueur in état['joueurs']], \
@@ -377,6 +373,18 @@ class Quoridor:
                 raise QuoridorError("Le joueur 1 ne peut plus bouger.")
             if not nx.has_path(graphe, self.position2, 'B2'):
                 raise QuoridorError("Le joueur 2 ne peut plus bouger.")
+
+    def _murs_h(self):
+        return self.gamestate['murs']['horizontaux']
+
+    def _murs_v(self):
+        return self.gamestate['murs']['verticaux']
+
+    def _joueur1(self):
+        return self.gamestate['joueurs'][0]
+
+    def _joueur2(self):
+        return self.gamestate['joueurs'][1]
 
 
 # FONCTION FOURNIE

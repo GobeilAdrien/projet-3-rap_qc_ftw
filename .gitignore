@@ -5,9 +5,9 @@
 !/README.md
 !/quoridor.py
 !/quoridorX.py
+!/main.py
+!/api.py
 
 #Ceux qui ne sont pas à remettre
 !/quoridor_part_1.py
-!/main.py
-!/api.py
 !/test.py

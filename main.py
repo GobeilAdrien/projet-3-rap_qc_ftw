@@ -54,7 +54,7 @@ Examples:
 import argparse
 from api import lister_parties, initialiser_partie, jouer_coup
 from quoridor import Quoridor
-from quoridorX import QuoridorX
+from quoridorx import QuoridorX
 
 def analyser_commande():
     """Génère un analyseur de ligne de commande

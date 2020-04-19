@@ -203,7 +203,8 @@ class Quoridor:
 
     def _vérifier_murs_déplacer_jeton(self, joueur_dep, position):
         for k in self.gamestate['murs']['horizontaux']:
-            if _is_coup_avant(position) and ((k[0] == joueur_dep[0] and k[1] + 1 == joueur_dep[1]) or\
+            if _is_coup_avant(position) and (
+                (k[0] == joueur_dep[0] and k[1] + 1 == joueur_dep[1]) or\
                 (k[0]-1 == joueur_dep[0] and k[1] + 1 == joueur_dep[1])):
                 raise QuoridorError("Un mur empêche votre coup.")
             if _is_coup_arrière(position) and ((k[0] == joueur_dep[0] and k[1] == joueur_dep[1]) or\
@@ -211,10 +212,12 @@ class Quoridor:
                 raise QuoridorError("Un mur empêche votre coup.")
 
         for m in self.gamestate['murs']['verticaux']:
-            if _is_coup_droit(position) and ((m[0] + 1 == joueur_dep[0] and m[1] - 1 == joueur_dep[1]) or\
+            if _is_coup_droit(position) and (
+                (m[0] + 1 == joueur_dep[0] and m[1] - 1 == joueur_dep[1]) or\
                 (m[0] + 1 == joueur_dep[0] and m[1] == joueur_dep[1])):
                 raise QuoridorError("Un mur empêche votre coup.")
-            if _is_coup_gauche(position) and ((m[0] == joueur_dep[0] and m[1] - 1 == joueur_dep[1]) or\
+            if _is_coup_gauche(position) and (
+                (m[0] == joueur_dep[0] and m[1] - 1 == joueur_dep[1]) or\
                 (m[0] == joueur_dep[0] and m[1] == joueur_dep[1])):
                 raise QuoridorError("Un mur empêche votre coup.")
 
@@ -311,7 +314,7 @@ class Quoridor:
 
         if joueur not in (1, 2):
             raise QuoridorError("Le numéro du joueur spécifié n'existe pas.")
-            
+        
         if orientation == 'horizontal':
             self._vérifier_murs_h_placer_mur(position)
         if orientation == 'vertical':

@@ -293,10 +293,11 @@ class Quoridor:
             Returns:
                 str/bool: Le nom du gagnant si la partie est terminée; False autrement.
         """
-        if self.gamestate['joueurs'][0]['pos'][1] == 9:
-            return self.gamestate['joueurs'][0]["nom"]
-        if self.gamestate['joueurs'][1]['pos'][1] == 1:
-            return self.gamestate['joueurs'][1]["nom"]
+        for i in range(9):
+            if self.position1 == [i+1, 9]:
+                return self.joueur1
+            if self.position2 == [i+1, 1]:
+                return self.joueur2
         return False
 
     def placer_mur(self, joueur: int, position: tuple, orientation: str):

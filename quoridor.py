@@ -169,13 +169,61 @@ class Quoridor:
             QuoridorError: La position est invalide (en dehors du damier).
             QuoridorError: La position est invalide pour l'état actuel du jeu.
         """
-        if joueur not in [1, 2]:
-            raise QuoridorError('le numéro du joueur doit être 1 ou 2')
-
-        if position[0] > 9 or position[0] < 1 or position[1] > 9 or position[1] < 1:
-            raise QuoridorError('la position est invalide (en dehors du damier)')
-
-        self.gamestate['joueurs'][joueur - 1]['pos'] = position
+        pos = position
+        état = self.gamestate
+        coup_droit, coup_gauche, coup_avant, coup_arrière = False, False, False, False
+        if joueur == 1:
+            joueur_dep = self.position1
+        else:
+            joueur_dep = self.position2
+        graphe_joueurs = construire_graphe([joueur['pos'] for joueur in état['joueurs']], \
+            état['murs']['horizontaux'], état['murs']['verticaux'])
+        if joueur not in (1, 2):
+            raise QuoridorError("Le numéro du joueur spécifié n'existe pas.")
+        if not 1 <= pos[0] <= 9 or not 1 <= pos[1] <= 9:
+            raise QuoridorError("Position invalide (en dehors du damier).")
+        if position[0] == pos[0] + 1:
+            coup_droit = True
+        if position[0] == pos[0] - 1:
+            coup_gauche = True
+        if position[1] == pos[1] + 1:
+            coup_avant = True
+        if position[1] == pos[1] - 1:
+            coup_arrière = True
+        for k in self.gamestate['murs']['horizontaux']:
+            if coup_avant and ((k[0] == joueur_dep[0] and k[1] + 1 == joueur_dep[1]) or\
+                (k[0]-1 == joueur_dep[0] and k[1] + 1 == joueur_dep[1])):
+                raise QuoridorError("Un mur empêche votre coup.")
+            if coup_arrière and ((k[0] == joueur_dep[0] and k[1] == joueur_dep[1]) or\
+                (k[0]-1 == joueur_dep[0] and k[1] == joueur_dep[1])):
+                raise QuoridorError("Un mur empêche votre coup.")
+        for m in self.gamestate['murs']['verticaux']:
+            if coup_droit and ((m[0] + 1 == joueur_dep[0] and m[1] - 1 == joueur_dep[1]) or\
+                (m[0] + 1 == joueur_dep[0] and m[1] == joueur_dep[1])):
+                raise QuoridorError("Un mur empêche votre coup.")
+            if coup_gauche and ((m[0] == joueur_dep[0] and m[1] - 1 == joueur_dep[1]) or\
+                (m[0] == joueur_dep[0] and m[1] == joueur_dep[1])):
+                raise QuoridorError("Un mur empêche votre coup.")
+        if joueur == 1:
+            coup_permis = list(graphe_joueurs.successors(self.position1))
+            flag1 = 0
+            for n in coup_permis:
+                if pos == n:
+                    flag1 += 1
+            if flag1 != 1:
+                raise QuoridorError("Coup invalide.")
+            self.position1 = pos
+            self.gamestate['joueurs'][0]['pos'] = pos
+        if joueur == 2:
+            coup_permis = list(graphe_joueurs.successors(self.position2))
+            flag2 = 0
+            for j in coup_permis:
+                if pos == j:
+                    flag2 += 1
+            if flag2 != 1:
+                raise QuoridorError("Coup invalide.")
+            self.position2 = pos
+            self.gamestate['joueurs'][1]['pos'] = pos
 
     def état_partie(self):
         """Produire l'état actuel de la partie.

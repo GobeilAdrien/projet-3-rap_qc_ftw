@@ -271,65 +271,22 @@ class Quoridor:
             QuoridorError: Le numéro du joueur est autre que 1 ou 2.
             QuoridorError: La partie est déjà terminée.
         """
-        graphe = construire_graphe(
-            [joueur['pos'] for joueur in self.gamestate['joueurs']],
-            self.gamestate['murs']['horizontaux'],
-            self.gamestate['murs']['verticaux'])
-
-        position_a_aller_j1 = nx.shortest_path(
-            graphe,
-            tuple(self.gamestate['joueurs'][0]['pos']), 'B1')
-
-        position_a_aller_j2 = nx.shortest_path(
-            graphe,
-            tuple(self.gamestate['joueurs'][1]['pos']), 'B2')
-
-        # JOUER COUP
+        if joueur not in (1, 2):
+            raise QuoridorError("Le numéro du joueur spécifié n'existe pas.")
+        if self.partie_terminée() is not False:
+            raise QuoridorError("La partie est déjà terminée.")
+        état = self.gamestate
+        graphe_joueurs = construire_graphe([joueur['pos'] for joueur in état['joueurs']], \
+            état['murs']['horizontaux'], état['murs']['verticaux'])
+        shortest_pathj1 = nx.shortest_path(graphe_joueurs, self.position1, 'B1')
+        shortest_pathj2 = nx.shortest_path(graphe_joueurs, self.position2, 'B2')
         if joueur == 1:
-
-            # SI LES MURS == 0
-            if self.gamestate['joueurs'][0]['murs'] <= 0:
-                self.déplacer_jeton(joueur, position_a_aller_j1[1])
-
-            # SI LE CHEMIN EST PLUS COURT QUE L'ADVERSAIRE
-            if len(position_a_aller_j1) <= len(position_a_aller_j2):
-                self.déplacer_jeton(joueur, position_a_aller_j1[1])
-
-            else:
-                try:
-                    x = random.randint(1, 9)
-                    y = random.randint(1, 9)
-                    orientation = random.choice(['horizontal', 'vertical'])
-                    self.placer_mur(1, (x, y), orientation)
-                    self.gamestate['joueurs'][0]['murs'] -= 1
-                except QuoridorError:
-                    self.gamestate['joueurs'][0]['murs'] += 1
-                    # self.jouer_coup(1)
-                    self.déplacer_jeton(joueur, position_a_aller_j1[1])
-
-        # JOUER COUP
+            nouvelle_position = (shortest_pathj1[1])
+            self.déplacer_jeton(joueur, nouvelle_position)
         if joueur == 2:
-
-            # SI LES MURS == 0
-            if self.gamestate['joueurs'][1]['murs'] <= 0:
-                self.déplacer_jeton(joueur, position_a_aller_j2[1])
-
-            # SI LE CHEMIN EST PLUS COURT QUE L'ADVERSAIRE
-            if len(position_a_aller_j1) >= len(position_a_aller_j2):
-                self.déplacer_jeton(joueur, position_a_aller_j2[1])
-
-            else:
-
-                try:
-                    x = random.randint(1, 9)
-                    y = random.randint(1, 9)
-                    orientation = random.choice(['horizontal', 'vertical'])
-                    self.placer_mur(1, (x, y), orientation)
-                    self.gamestate['joueurs'][1]['murs'] -= 1
-                except QuoridorError:
-                    self.gamestate['joueurs'][1]['murs'] += 1
-                    # self.jouer_coup(2)
-                    self.déplacer_jeton(joueur, position_a_aller_j2[1])
+            nouvelle_position = (shortest_pathj2[1])
+            self.déplacer_jeton(joueur, nouvelle_position)
+        return ('D', nouvelle_position)
 
     def partie_terminée(self):
         """Déterminer si la partie est terminée.

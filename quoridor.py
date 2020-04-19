@@ -97,7 +97,7 @@ class Quoridor:
                     "murs": self.murs_j2, "pos": self.position2}], \
                         "murs": {"horizontaux": murs_h, "verticaux": murs_v}}
 
-    def _vérifier_murs(murs_h, murs_v):
+    def _vérifier_murs(self, murs_h, murs_v):
         for m in murs_h:
             if not 1 <= m[0] <= 8:
                 raise QuoridorError("Emplacement de mur invalide.")

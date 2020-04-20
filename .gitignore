@@ -4,10 +4,10 @@
 !/.gitignore
 !/README.md
 !/quoridor.py
-!/quoridorX.py
-
-#Ceux qui ne sont pas à remettre
-!/quoridor-part-1.py
+!/quoridorx.py
 !/main.py
 !/api.py
+
+#Ceux qui ne sont pas à remettre
+!/quoridor_part_1.py
 !/test.py

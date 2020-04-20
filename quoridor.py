@@ -11,7 +11,6 @@ class Quoridor:
 
     Attributes:
         gamestate (dict): état du jeu tenu à jour.
-        TODO: Identifiez les autres attribut de votre classe
 
     Examples:
         >>> q.Quoridor()
@@ -75,7 +74,7 @@ class Quoridor:
                     raise QuoridorError("Position invalide.")
             murs_h = murs["horizontaux"]
             murs_v = murs["verticaux"]
-            self._vérifier_murs(murs_h, murs_v)
+            _vérifier_murs(murs_h, murs_v)
         if not isinstance(joueurs[0], dict):
             self.murs_j1 = 10
             self.murs_j2 = 10
@@ -96,18 +95,6 @@ class Quoridor:
                 'pos': self.position1}, {"nom": joueurs[1]['nom'], \
                     "murs": self.murs_j2, "pos": self.position2}], \
                         "murs": {"horizontaux": murs_h, "verticaux": murs_v}}
-
-    def _vérifier_murs(self, murs_h, murs_v):
-        for m in murs_h:
-            if not 1 <= m[0] <= 8:
-                raise QuoridorError("Emplacement de mur invalide.")
-            if not 2 <= m[1] <= 9:
-                raise QuoridorError("Emplacement de mur invalide.")
-        for k in murs_v:
-            if not 2 <= k[0] <= 9:
-                raise QuoridorError("Emplacement de mur invalide.")
-            if not 1 <= k[1] <= 8:
-                raise QuoridorError("Emplacement de mur invalide.")
 
     def __str__(self):
         """Représentation en art ascii de l'état actuel de la partie.
@@ -406,6 +393,17 @@ class Quoridor:
     def _joueur2(self):
         return self.gamestate['joueurs'][1]
 
+def _vérifier_murs(murs_h, murs_v):
+    for m in murs_h:
+        if not 1 <= m[0] <= 8:
+            raise QuoridorError("Emplacement de mur invalide.")
+        if not 2 <= m[1] <= 9:
+            raise QuoridorError("Emplacement de mur invalide.")
+    for k in murs_v:
+        if not 2 <= k[0] <= 9:
+            raise QuoridorError("Emplacement de mur invalide.")
+        if not 1 <= k[1] <= 8:
+            raise QuoridorError("Emplacement de mur invalide.")
 
 def _is_coup_droit(position):
     return position[0] == position[0] + 1

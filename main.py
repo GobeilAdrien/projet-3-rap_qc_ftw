@@ -52,7 +52,7 @@ Examples:
         Définissez la ligne de votre coup : 2
 """
 from api import lister_parties, initialiser_partie, jouer_coup
-from quoridor-part-1 import afficher_damier_ascii, analyser_commande
+from quoridor_part_1 import afficher_damier_ascii, analyser_commande
 
 
 if __name__ == '__main__':

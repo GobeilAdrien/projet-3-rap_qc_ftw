@@ -51,13 +51,10 @@ Examples:
         Définissez la colonne de votre coup : 5
         Définissez la ligne de votre coup : 2
 """
-
-import argparse
-
 from api import lister_parties, initialiser_partie, jouer_coup
 from quoridor import Quoridor
 from QuoridorX import QuoridorX
-
+import argparse
 def analyser_commande():
     """Génère un analyseur de ligne de commande
     En utilisant le module argparse, génère un analyseur de ligne de commande.

@@ -23,6 +23,8 @@ class QuoridorX(Quoridor):
         self.curs_j1.penup()
         self.curs_j2.penup()
         self.curs.speed(0)
+        self.fen.register_shape('bender.gif')
+        self.fen.register_shape('rap.gif')
         self.fen.register_shape('rectangle', ((0, 0), (0, 50), (50, 50), (50, 0)))
         self.fen.register_shape('mur_h', ((0, 0), (0, 115), (8, 115), (8, 0)))
         self.fen.register_shape('mur_v', ((0, 0), (-115, 0), (-115, 8), (0, 8)))
@@ -37,7 +39,7 @@ class QuoridorX(Quoridor):
                 self.curs.penup()
                 x_cord = -285 + (j*(65))
                 self.curs.goto(x_cord, y_cord)
-                self.curs.fillcolor("blue")
+                self.curs.fillcolor("#e5b5ff")
                 self.curs.shape("rectangle")
                 self.curs.stamp()
         self.afficher()
@@ -68,9 +70,7 @@ class QuoridorX(Quoridor):
             x_pos = -260 + 65 * (position[0]-1)
             if self.curs_j1.position() != (x_pos, y_pos):
                 self.curs_j1.hideturtle()
-                self.curs_j1.color('red')
-                self.curs_j1.shapesize(2.2, 2.2, 1)
-                self.curs_j1.shape('circle')
+                self.curs_j1.shape('rap.gif')
                 self.curs_j1.goto(x_pos, y_pos)
                 self.curs_j1.showturtle()
         if joueur == 2:
@@ -79,8 +79,6 @@ class QuoridorX(Quoridor):
             x_pos = -260 + 65 * (position[0]-1)
             if self.curs_j2.position() != (x_pos, y_pos):
                 self.curs_j2.hideturtle()
-                self.curs_j2.color('green')
-                self.curs_j2.shapesize(2.2, 2.2, 1)
-                self.curs_j2.shape('circle')
+                self.curs_j2.shape('bender.gif')
                 self.curs_j2.goto(x_pos, y_pos)
                 self.curs_j2.showturtle()

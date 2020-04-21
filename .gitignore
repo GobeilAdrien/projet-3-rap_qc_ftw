@@ -2,7 +2,6 @@
 *
 # Ne pas ignorer les fichiers suivant
 !/.gitignore
-!/README.md
 !/quoridor.py
 !/quoridorx.py
 !/main.py
@@ -11,3 +10,4 @@
 #Ceux qui ne sont pas à remettre
 !/quoridor_part_1.py
 !/test.py
+!/README.md

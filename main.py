@@ -51,6 +51,9 @@ Examples:
         Définissez la colonne de votre coup : 5
         Définissez la ligne de votre coup : 2
 """
+
+import argparse
+
 from api import lister_parties, initialiser_partie, jouer_coup
 from quoridor import Quoridor
 from QuoridorX import QuoridorX

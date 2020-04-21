@@ -23,13 +23,13 @@ class QuoridorX(Quoridor):
         self.curs_j1.penup()
         self.curs_j2.penup()
         self.curs.speed(0)
-        self.fen.register_shape("rectangle", ((0, 0), (0, 50), (50, 50), (50, 0)))
-        self.fen.register_shape("mur_h", ((0, 0), (0, 115), (8, 115), (8, 0)))
-        self.fen.register_shape("mur_v", ((0, 0), (-115, 0), (-115, 8), (0, 8)))
-        self.flag_mur_h = len(self.murs_h)
-        self.flag_mur_v = len(self.murs_v)
+        self.fen.register_shape('rectangle', ((0, 0), (0, 50), (50, 50), (50, 0)))
+        self.fen.register_shape('mur_h', ((0, 0), (0, 115), (8, 115), (8, 0)))
+        self.fen.register_shape('mur_v', ((0, 0), (-115, 0), (-115, 8), (0, 8)))
+        self.flag_mur_h = len(murs_h)
+        self.flag_mur_v = len(murs_v)
         self.init_mur = 0
-        if self.murs_h != [] or self.murs_v != []:
+        if murs_h != [] or murs_v != []:
             self.init_mur = 1
         for i in range(9):
             y_cord = 285 - (i*(65))
@@ -41,3 +41,22 @@ class QuoridorX(Quoridor):
                 self.curs.shape("rectangle")
                 self.curs.stamp()
         self.afficher()
+    
+    def afficher(self):
+            "Affiche l'etat du jeu"
+            self.fen.delay(100)
+            self.curs.speed(2)
+            self.placer_jeton(1)
+            self.placer_jeton(2)
+            if self.init_mur == 1:
+                self.mur_horizontal()
+                self.mur_vertical()
+                self.init_mur = 0
+            if len(self.murs_h) != self.flag_mur_h:
+                self.mur_horizontal()
+            if len(self.murs_v) != self.flag_mur_v:
+                self.mur_vertical()
+            self.flag_mur_h = len(self.murs_h)
+            self.flag_mur_v = len(self.murs_v)
+            self.fen.update()
+    

@@ -59,10 +59,10 @@ class QuoridorX(Quoridor):
             self.flag_mur_h = len(self.murs_h)
             self.flag_mur_v = len(self.murs_v)
             self.fen.update()
-    
-    def placer_jeton(self, joueurs):
+            
+    def placer_jeton(self, joueur):
         'Place les jetons'
-        if joueurs == 1:
+        if joueur == 1:
             position = self.position1
             y_pos = -260 + 65 * (position[1]-1)
             x_pos = -260 + 65 * (position[0]-1)
@@ -73,7 +73,7 @@ class QuoridorX(Quoridor):
                 self.curs_j1.shape('circle')
                 self.curs_j1.goto(x_pos, y_pos)
                 self.curs_j1.showturtle()
-        if joueurs == 2:
+        if joueur == 2:
             position = self.position2
             y_pos = -260 + 65 * (position[1]-1)
             x_pos = -260 + 65 * (position[0]-1)
@@ -84,4 +84,3 @@ class QuoridorX(Quoridor):
                 self.curs_j2.shape('circle')
                 self.curs_j2.goto(x_pos, y_pos)
                 self.curs_j2.showturtle()
-    

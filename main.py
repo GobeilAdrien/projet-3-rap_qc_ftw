@@ -51,11 +51,10 @@ Examples:
         Définissez la colonne de votre coup : 5
         Définissez la ligne de votre coup : 2
 """
-import argparse
 from api import lister_parties, initialiser_partie, jouer_coup
 from quoridor import Quoridor
-from quoridorx import QuoridorX
-
+from QuoridorX import QuoridorX
+import argparse
 def analyser_commande():
     """Génère un analyseur de ligne de commande
     En utilisant le module argparse, génère un analyseur de ligne de commande.
@@ -68,7 +67,7 @@ def analyser_commande():
         Namespace: Retourne un objet de type Namespace possédant
             les clef «idul» et «lister».
     """
-    parser = argparse.ArgumentParser(description='Jeu Quoridor - phase 3')
+    parser = argparse.ArgumentParser(description='Jeu Quoridor - phase 1')
     parser.add_argument(
         'idul', metavar='idul',
         help='IDUL du joueur.')

@@ -74,11 +74,6 @@ def initialiser_partie(idul):
     Raises:
         RuntimeError: Erreur levée lorsqu'il y a présence d'un message
             dans la réponse du serveur."""
-    #Examples:
-        #>>> idul = 'josmi42'
-        #>>> partie = initialiser_partie(idul)
-        #>>> print(partie)
-        #Result: ('c1493454-1f7f-446f-9c61-bd7a9d66c92d', { 'joueurs': ... })
     url_base = 'https://python.gel.ulaval.ca/quoridor/api'
     rep = requests.post(f'{url_base}/initialiser/', data={'idul': idul})
     if rep.status_code == 200:

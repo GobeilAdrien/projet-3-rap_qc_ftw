@@ -15,6 +15,7 @@ Examples:
     test.py::test_initialiser_partie_raise_runtime_error PASSED                         [ 50%]
     test.py::test_initialiser_partie_return_tuple PASSED                                [100%]
     ==================================== 2 passed in 0.16s ===================================="""
+"""MÀJ"""
 import pytest
 import api
 

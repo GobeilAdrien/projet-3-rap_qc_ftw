@@ -8,7 +8,7 @@ class QuoridorX(Quoridor):
     """ Classe quoridor graphique """
     def __init__(self, joueurs, murs=None):
         """Fonction contructeur"""
-        super().__init__(joueurs, murs)
+        super().__init__(self, joueurs, murs)
         self.fen = turtle.Screen()
         self.fen.title("Jeu Quoridor contre un serveur automatisé")
         self.fen.setup(width=600, height=600)
@@ -37,13 +37,13 @@ class QuoridorX(Quoridor):
                 self.curs.penup()
                 x_cord = -285 + (j*(65))
                 self.curs.goto(x_cord, y_cord)
-                self.curs.fillcolor("gainsboro")
+                self.curs.fillcolor("blue")
                 self.curs.shape("rectangle")
                 self.curs.stamp()
         self.afficher()
     
     def afficher(self):
-            "Affiche l'etat du jeu"
+            "Affiche l'état du jeu"
             self.fen.delay(100)
             self.curs.speed(2)
             self.placer_jeton(1)
@@ -59,4 +59,29 @@ class QuoridorX(Quoridor):
             self.flag_mur_h = len(self.murs_h)
             self.flag_mur_v = len(self.murs_v)
             self.fen.update()
+    
+    def placer_jeton(self, joueurs):
+        'Place les jetons'
+        if joueurs == 1:
+            position = self.position1
+            y_pos = -260 + 65 * (position[1]-1)
+            x_pos = -260 + 65 * (position[0]-1)
+            if self.curs_j1.position() != (x_pos, y_pos):
+                self.curs_j1.hideturtle()
+                self.curs_j1.color('red')
+                self.curs_j1.shapesize(2.2, 2.2, 1)
+                self.curs_j1.shape('circle')
+                self.curs_j1.goto(x_pos, y_pos)
+                self.curs_j1.showturtle()
+        if joueurs == 2:
+            position = self.position2
+            y_pos = -260 + 65 * (position[1]-1)
+            x_pos = -260 + 65 * (position[0]-1)
+            if self.curs_j2.position() != (x_pos, y_pos):
+                self.curs_j2.hideturtle()
+                self.curs_j2.color('green')
+                self.curs_j2.shapesize(2.2, 2.2, 1)
+                self.curs_j2.shape('circle')
+                self.curs_j2.goto(x_pos, y_pos)
+                self.curs_j2.showturtle()
     

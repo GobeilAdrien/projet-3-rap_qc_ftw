@@ -8,7 +8,7 @@ class QuoridorX(Quoridor):
     """ Classe quoridor graphique """
     def __init__(self, joueurs, murs=None):
         """Fonction contructeur"""
-        super().__init__(self, joueurs, murs)
+        super().__init__(joueurs, murs)
         self.fen = turtle.Screen()
         self.fen.title("Jeu Quoridor contre un serveur automatisé")
         self.fen.setup(width=600, height=600)
@@ -31,7 +31,7 @@ class QuoridorX(Quoridor):
         self.flag_mur_h = len(murs_h)
         self.flag_mur_v = len(murs_v)
         self.init_mur = 0
-        if murs_h != [] or murs_v != []:
+        if self.murs_h != [] or self.murs_v != []:
             self.init_mur = 1
         for i in range(9):
             y_cord = 285 - (i*(65))

@@ -106,7 +106,7 @@ class Quoridor:
         """
         nom1 = f'1={self.gamestate["joueurs"][0]["nom"]}, '
         nom2 = f'2={self.gamestate["joueurs"][1]["nom"]}'
-        haut = f'Légende:' + nom1 + nom2 + '\n'
+        haut = f"""Légende: 1={nom1}, 2={nom2}\n"""
         haut += '   -----------------------------------\n'
         bas = '--|-----------------------------------\n'
         bas += '  | 1   2   3   4   5   6   7   8   9\n'

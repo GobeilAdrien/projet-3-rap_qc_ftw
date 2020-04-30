@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" Programme permettant d'utiliser l'intelligence artificielle amélioré"""
+"""Programme permettant d'utiliser l'intelligence artificielle amélioré."""
 import turtle
 from quoridor import Quoridor
 
@@ -28,8 +28,8 @@ class QuoridorX(Quoridor):
         self.fen.register_shape('rectangle', ((0, 0), (0, 50), (50, 50), (50, 0)))
         self.fen.register_shape('mur_h', ((0, 0), (0, 115), (8, 115), (8, 0)))
         self.fen.register_shape('mur_v', ((0, 0), (-115, 0), (-115, 8), (0, 8)))
-        self.flag_mur_h = len(murs_h)
-        self.flag_mur_v = len(murs_v)
+        self.flag_mur_h = len(self.murs_h)
+        self.flag_mur_v = len(self.murs_v)
         self.init_mur = 0
         if self.murs_h != [] or self.murs_v != []:
             self.init_mur = 1
@@ -82,3 +82,45 @@ class QuoridorX(Quoridor):
                 self.curs_j2.shape('bender.gif')
                 self.curs_j2.goto(x_pos, y_pos)
                 self.curs_j2.showturtle()
+
+    def mur_horizontal(self):
+        'Place les mursV'
+        if self.init_mur == 1:
+            for mur_h in self.murs_h:
+                self.curs.penup()
+                x_murh = -285 + 65*(mur_h[0]-1)
+                y_murh = -285 + 65 *(mur_h[1]-1) - 2.5
+                self.curs.goto(x_murh, y_murh)
+                self.curs.fillcolor('#0048ff')
+                self.curs.shape('mur_h')
+                self.curs.stamp()
+        if self.init_mur == 0:
+            mur_h = self.murs_h[-1]
+            self.curs.penup()
+            x_murh = -285 + 65*(mur_h[0]-1)
+            y_murh = -285 + 65 *(mur_h[1]-1) - 2.5
+            self.curs.goto(x_murh, y_murh)
+            self.curs.fillcolor('#0048ff')
+            self.curs.shape('mur_h')
+            self.curs.stamp()
+
+    def mur_vertical(self):
+        'Place les murs h'
+        if self.init_mur == 1:
+            for mur_v in self.murs_v:
+                self.curs.penup()
+                x_murv = -285 + 65*(mur_v[0]-1) - 12
+                y_murv = -285 + 65 *(mur_v[1]-1)
+                self.curs.goto(x_murv, y_murv)
+                self.curs.fillcolor('#e6fb19')
+                self.curs.shape('mur_v')
+                self.curs.stamp()
+        if self.init_mur == 0:
+            mur_v = self.murs_v[-1]
+            self.curs.penup()
+            x_murv = -285 + 65*(mur_v[0]-1) - 12
+            y_murv = -285 + 65 *(mur_v[1]-1)
+            self.curs.goto(x_murv, y_murv)
+            self.curs.fillcolor('#e6fb19')
+            self.curs.shape('mur_v')
+            self.curs.stamp()

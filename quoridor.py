@@ -261,15 +261,36 @@ class Quoridor:
         état = self.gamestate
         graphe_joueurs = construire_graphe([joueur['pos'] for joueur in état['joueurs']], \
             état['murs']['horizontaux'], état['murs']['verticaux'])
-        shortest_pathj1 = nx.shortest_path(graphe_joueurs, self.position1, 'B1')
-        shortest_pathj2 = nx.shortest_path(graphe_joueurs, self.position2, 'B2')
-        if joueur == 1:
-            nouvelle_position = (shortest_pathj1[1])
-            self.déplacer_jeton(joueur, nouvelle_position)
-        if joueur == 2:
-            nouvelle_position = (shortest_pathj2[1])
-            self.déplacer_jeton(joueur, nouvelle_position)
-        return ('D', nouvelle_position)
+
+        j_actuel = self.gamestate['joueurs'][(joueur + 1) % 2]
+        j_adverse = self.gamestate['joueurs'][joueur % 2]
+        shortest_pathj1 = nx.shortest_path(graphe_joueurs, j_actuel["pos"], f"B{joueur}")
+        shortest_pathj2 = nx.shortest_path(graphe_joueurs, j_adverse["pos"], f"B{(joueur % 2) + 1}")
+
+        # on vérifie si le shortest path du joueur adverse est plus court que celui du joueur
+        # actuel, si oui, on place un mur, sinon, le joueur actuel se déplace.
+        if len(shortest_pathj1) > len(shortest_pathj2) and j_actuel["murs"] >= 1:
+            mur_orientation = "vertical" if shortest_pathj2[1][1] == shortest_pathj2[0][1] \
+                else "horizontal"
+            if mur_orientation == "vertical":
+                mur_index = shortest_pathj2[1] if shortest_pathj2[1][0] > shortest_pathj2[0][0] \
+                    else shortest_pathj2[0]
+            else:
+                mur_index = shortest_pathj2[1] if shortest_pathj2[1][1] > shortest_pathj2[0][1] \
+                    else shortest_pathj2[0]
+            try:
+                self.placer_mur(joueur, mur_index, mur_orientation)
+                coup = ["MH" if mur_orientation == "horizontal" else "MV",
+                        (mur_index[0], mur_index[1])]
+            except QuoridorError as quoridor_error:
+                print(quoridor_error, "\n")
+                self.déplacer_jeton(joueur, shortest_pathj1[1])
+                coup = ["D", (shortest_pathj1[1][0], shortest_pathj1[1][1])]
+        else:
+            self.déplacer_jeton(joueur, shortest_pathj1[1])
+            coup = ["D", (shortest_pathj1[1][0], shortest_pathj1[1][1])]
+
+        return coup
 
     def partie_terminée(self):
         """Déterminer si la partie est terminée.

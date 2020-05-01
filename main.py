@@ -53,7 +53,7 @@ Examples:
 """
 from api import lister_parties, initialiser_partie, jouer_coup
 from quoridor import Quoridor
-from QuoridorX import QuoridorX
+from quoridorx import QuoridorX
 import argparse
 
 

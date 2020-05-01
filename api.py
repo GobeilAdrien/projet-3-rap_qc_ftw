@@ -149,4 +149,4 @@ def jouer_coup(id_partie, type_coup, position: tuple):
         except StopIteration:
             raise StopIteration(dico["gagnant"])
     else:
-        print(f"Le POST sur {url_base} initialiser a produit le code d'erreur {rep.status_code}.")
+        return f"Le POST sur {url_base} initialiser a produit le code d'erreur {rep.status_code}."

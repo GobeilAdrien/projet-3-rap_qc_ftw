@@ -43,25 +43,25 @@ class QuoridorX(Quoridor):
                 self.curs.shape("rectangle")
                 self.curs.stamp()
         self.afficher()
-    
+
     def afficher(self):
-            "Affiche l'état du jeu"
-            self.fen.delay(100)
-            self.curs.speed(2)
-            self.placer_jeton(1)
-            self.placer_jeton(2)
-            if self.init_mur == 1:
-                self.mur_horizontal()
-                self.mur_vertical()
-                self.init_mur = 0
-            if len(self.murs_h) != self.flag_mur_h:
-                self.mur_horizontal()
-            if len(self.murs_v) != self.flag_mur_v:
-                self.mur_vertical()
-            self.flag_mur_h = len(self.murs_h)
-            self.flag_mur_v = len(self.murs_v)
-            self.fen.update()
-            
+        "Affiche l'état du jeu"
+        self.fen.delay(100)
+        self.curs.speed(2)
+        self.placer_jeton(1)
+        self.placer_jeton(2)
+        if self.init_mur == 1:
+            self.mur_horizontal()
+            self.mur_vertical()
+            self.init_mur = 0
+        if len(self.murs_h) != self.flag_mur_h:
+            self.mur_horizontal()
+        if len(self.murs_v) != self.flag_mur_v:
+            self.mur_vertical()
+        self.flag_mur_h = len(self.murs_h)
+        self.flag_mur_v = len(self.murs_v)
+        self.fen.update()
+
     def placer_jeton(self, joueur):
         'Place les jetons'
         if joueur == 1:

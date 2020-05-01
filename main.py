@@ -229,8 +229,8 @@ def quoridorgame(arg):
             murs = état_2['murs']
             jeu = QuoridorX(joueur, murs)
             print('Quel coup désirer vous jouer ?')
-            print("Deplacement pion: D , Mur Horizontal : MH, Mur Vertical : MV ")
-            coup = input()
+            print("Deplacement pion: D , Mur Horizontal: MH, Mur Vertical: MV ")
+            coup = input().upper()
             print('Quel position sur le plateau désirer vous placer votre pièce?')
             print('(x,y)')
             position = input()

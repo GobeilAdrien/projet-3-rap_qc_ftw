@@ -51,10 +51,10 @@ Examples:
         Définissez la colonne de votre coup : 5
         Définissez la ligne de votre coup : 2
 """
+import argparse
 from api import lister_parties, initialiser_partie, jouer_coup
 from quoridor import Quoridor
 from quoridorx import QuoridorX
-import argparse
 
 
 def analyser_commande():
@@ -165,11 +165,11 @@ def afficher_damier_ascii(grille):
 if __name__ == '__main__':
     analyser_commande()
 
-fonc = analyser_commande()
-if fonc.lister == True:
-    lister_parties(fonc.idul)
+FONC = analyser_commande()
+if FONC.lister:
+    lister_parties(FONC.idul)
 
-if fonc.lister == False:
+if not FONC.lister:
     pass
 
 def quoridorgame(arg):

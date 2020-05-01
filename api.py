@@ -49,11 +49,14 @@ def lister_parties(idul):
                 raise RuntimeError
             #Raise RuntimeError: Erreur levée lorsqu'il y a présence
             #d'un message dans la réponse du serveur.
+            rep['joueurs'][0]['pos'] = tuple(rep['joueurs'][0]['pos'])
+            rep['joueurs'][1]['pos'] = tuple(rep['joueurs'][1]['pos'])
             return rep["parties"]
         except RuntimeError:
             raise RuntimeError(rep["message"])
     else:
         return f"Le GET sur {url_base + 'lister'} a produit le code d'erreur {rep.status_code}."
+
 
 def initialiser_partie(idul):
     """ Renvoit les informations d'un début de partie.
@@ -86,6 +89,7 @@ def initialiser_partie(idul):
             raise RuntimeError(rep["message"])
     else:
         return f"Le POST sur {url_base} a produit le code d'erreur {rep.status_code}."
+
 
 def jouer_coup(id_partie, type_coup, position: tuple):
     """Jouer votre coup dans une partie en cours
@@ -137,7 +141,9 @@ def jouer_coup(id_partie, type_coup, position: tuple):
                 raise RuntimeError
             if "gagnant" in dico:
                 raise StopIteration
-            print(dico['état'])
+            dico['état']['joueurs'][0]['pos'] = tuple(dico['état']['joueurs'][0]['pos'])
+            dico['état']['joueurs'][1]['pos'] = tuple(dico['état']['joueurs'][1]['pos'])
+            return dico['état']
         except RuntimeError:
             raise RuntimeError(dico["message"])
         except StopIteration:

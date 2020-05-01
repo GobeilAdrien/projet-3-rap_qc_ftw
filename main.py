@@ -83,7 +83,6 @@ def analyser_commande():
         help="Activer le mode graphique")
     return parser.parse_args()
 
-
 def afficher_damier_ascii(grille):
     """Afficher le damier
 
@@ -163,7 +162,6 @@ def afficher_damier_ascii(grille):
     print('\n'.join([debut, milieu, fin1, fin2]))
 
 
-
 if __name__ == '__main__':
     analyser_commande()
 
@@ -173,33 +171,6 @@ if fonc.lister == True:
 
 if fonc.lister == False:
     pass
-
-
-tuple_id_état = initialiser_partie(analyser_commande().idul)
-if len(tuple_id_état) > 1:
-    afficher_damier_ascii(tuple_id_état[1])
-    VAR = True
-    while VAR:
-        try:
-            print("Type de coup disponible :\n- D : Déplacement\n- MH: Mur Horizontal\n- MV: Mur Vertical")
-            a = input('Choisissez votre type de coup (D, MH ou MV) : ').upper()
-            position_x = input('''Définissez la colonne de votre coup (axe x) : ''')
-            position_y = input('''Définissez la ligne de votre coup (axe y) : ''')
-            dico = jouer_coup(tuple_id_état[0], a, (position_x, position_y))
-            if "message" in dico:
-                raise RuntimeError
-            if "gagnant" in dico:
-                raise StopIteration
-            if type(dico) == str:
-                print(dico)
-            afficher_damier_ascii(dico)
-        except StopIteration as winner:
-            VAR = False
-            print(winner)
-        except RuntimeError as err:
-            print(err)
-else:
-    print(tuple_id_état)
 
 def quoridorgame(arg):
     """ Fonction servant a jouer au jeu """
@@ -238,8 +209,8 @@ def quoridorgame(arg):
             état = jouer_coup(identifiant, coup, tuple(pos))
             afficher_damier_ascii(état)
             joueur1 = état['joueurs']
-            murs1 = état['murs']
-            jeu = Quoridor(joueur1, murs1)
+            murs_j1 = état['murs']
+            jeu = Quoridor(joueur1, murs_j1)
     # mode manuel avec affichage graphique
     if arg.graphique and not arg.automatique:
         [identifiant, état] = initialiser_partie(idul)
@@ -274,8 +245,8 @@ def quoridorgame(arg):
             jeu.afficher()
             état = jouer_coup(identifiant, coup, tuple(pos))
             joueur1 = état['joueurs']
-            murs1 = état['murs']
-            jeu = QuoridorX(joueur1, murs1)
+            murs_j1 = état['murs']
+            jeu = QuoridorX(joueur1, murs_j1)
 
 ARGS = analyser_commande()
 quoridorgame(ARGS)

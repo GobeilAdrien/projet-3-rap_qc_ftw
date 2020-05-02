@@ -162,6 +162,82 @@ def afficher_damier_ascii(grille):
     print('\n'.join([debut, milieu, fin1, fin2]))
 
 
+def mode_manuel(idul):
+    etat_jeu = initialiser_partie(idul)
+    print(afficher_damier_ascii(etat_jeu[1]))
+    print('Quel coup désirer vous jouer ?')
+    print("Deplacement pion: D , Mur Horizontal : MH, Mur Vertical : MV ")
+    coup = input()
+    print('Quel position sur le plateau désirer vous placer votre pièce?')
+    print('(x,y)')
+    position = input()
+    etat_jeu_2 = jouer_coup(etat_jeu[0], coup, position)
+    print(afficher_damier_ascii(etat_jeu_2))
+    while 1:
+        print('Quel coup désirer vous jouer ?')
+        print("Deplacement pion: D , Mur Horizontal : MH, Mur Vertical : MV ")
+        coup = input()
+        print('Quel position sur le plateau désirer vous placer votre pièce?')
+        print('(x,y)')
+        position = input()
+        etat_jeu_2 = jouer_coup(etat_jeu[0], coup, position)
+        print(afficher_damier_ascii(etat_jeu_2))
+
+
+def mode_automatique(idul):
+    [identifiant, état] = initialiser_partie(idul)
+    print(afficher_damier_ascii(état))
+    joueur = [état['joueurs'][0]['nom'], état['joueurs'][1]['nom']]
+    jeu = Quoridor(joueur)
+    état = jeu.état_partie()
+    while 1:
+        (coup, pos) = jeu.jouer_coup(1)
+        print(jeu)
+        état = jouer_coup(identifiant, coup, tuple(pos))
+        afficher_damier_ascii(état)
+        joueur1 = état['joueurs']
+        murs_j1 = état['murs']
+        jeu = Quoridor(joueur1, murs_j1)
+
+
+def mode_manuel_graphique(idul):
+    [identifiant, état] = initialiser_partie(idul)
+    joueur = état['joueurs']
+    murs = état['murs']
+    QuoridorX(joueur, murs)
+    print('Quel coup désirer vous jouer ?')
+    print("Deplacement pion: D , Mur Horizontal : MH, Mur Vertical : MV ")
+    coup = input()
+    print('Quel position sur le plateau désirer vous placer votre pièce?')
+    print('(x,y)')
+    position = input()
+    état_2 = jouer_coup(identifiant, coup, position)
+    while 1:
+        joueur = état_2['joueurs']
+        murs = état_2['murs']
+        QuoridorX(joueur, murs)
+        print('Quel coup désirer vous jouer ?')
+        print("Deplacement pion: D , Mur Horizontal: MH, Mur Vertical: MV ")
+        coup = input().upper()
+        print('Quel position sur le plateau désirer vous placer votre pièce?')
+        print('(x,y)')
+        position = input()
+        état_2 = jouer_coup(identifiant, coup, position)
+
+
+def mode_automatique_graphique(idul):
+    [identifiant, état] = initialiser_partie(idul)
+    joueur = [état['joueurs'][0]['nom'], état['joueurs'][1]['nom']]
+    jeu = QuoridorX(joueur)
+    while 1:
+        (coup, pos) = jeu.jouer_coup(1)
+        jeu.afficher()
+        état = jouer_coup(identifiant, coup, tuple(pos))
+        joueur1 = état['joueurs']
+        murs_j1 = état['murs']
+        jeu = QuoridorX(joueur1, murs_j1)
+
+
 if __name__ == '__main__':
     analyser_commande()
 
@@ -175,78 +251,22 @@ if not FONC.lister:
 def quoridorgame(arg):
     """ Fonction servant a jouer au jeu """
     idul = arg.idul
+
     # Mode manuel
     if not (arg.automatique or arg.graphique):
-        etat_jeu = initialiser_partie(idul)
-        print(afficher_damier_ascii(etat_jeu[1]))
-        print('Quel coup désirer vous jouer ?')
-        print("Deplacement pion: D , Mur Horizontal : MH, Mur Vertical : MV ")
-        coup = input()
-        print('Quel position sur le plateau désirer vous placer votre pièce?')
-        print('(x,y)')
-        position = input()
-        etat_jeu_2 = jouer_coup(etat_jeu[0], coup, position)
-        print(afficher_damier_ascii(etat_jeu_2))
-        while 1:
-            print('Quel coup désirer vous jouer ?')
-            print("Deplacement pion: D , Mur Horizontal : MH, Mur Vertical : MV ")
-            coup = input()
-            print('Quel position sur le plateau désirer vous placer votre pièce?')
-            print('(x,y)')
-            position = input()
-            etat_jeu_2 = jouer_coup(etat_jeu[0], coup, position)
-            print(afficher_damier_ascii(etat_jeu_2))
+        mode_manuel(idul)
+
     # mode automatique
     if arg.automatique and not arg.graphique:
-        [identifiant, état] = initialiser_partie(idul)
-        print(afficher_damier_ascii(état))
-        joueur = [état['joueurs'][0]['nom'], état['joueurs'][1]['nom']]
-        jeu = Quoridor(joueur)
-        état = jeu.état_partie()
-        while 1:
-            (coup, pos) = jeu.jouer_coup(1)
-            print(jeu)
-            état = jouer_coup(identifiant, coup, tuple(pos))
-            afficher_damier_ascii(état)
-            joueur1 = état['joueurs']
-            murs_j1 = état['murs']
-            jeu = Quoridor(joueur1, murs_j1)
+        mode_automatique(idul)
+
     # mode manuel avec affichage graphique
     if arg.graphique and not arg.automatique:
-        [identifiant, état] = initialiser_partie(idul)
-        joueur = état['joueurs']
-        murs = état['murs']
-        jeu = QuoridorX(joueur, murs)
-        print('Quel coup désirer vous jouer ?')
-        print("Deplacement pion: D , Mur Horizontal : MH, Mur Vertical : MV ")
-        coup = input()
-        print('Quel position sur le plateau désirer vous placer votre pièce?')
-        print('(x,y)')
-        position = input()
-        état_2 = jouer_coup(identifiant, coup, position)
-        while 1:
-            joueur = état_2['joueurs']
-            murs = état_2['murs']
-            jeu = QuoridorX(joueur, murs)
-            print('Quel coup désirer vous jouer ?')
-            print("Deplacement pion: D , Mur Horizontal: MH, Mur Vertical: MV ")
-            coup = input().upper()
-            print('Quel position sur le plateau désirer vous placer votre pièce?')
-            print('(x,y)')
-            position = input()
-            état_2 = jouer_coup(identifiant, coup, position)
+        mode_manuel_graphique(idul)
+
     # mode automatique avec affichage
     if arg.automatique and arg.graphique:
-        [identifiant, état] = initialiser_partie(idul)
-        joueur = [état['joueurs'][0]['nom'], état['joueurs'][1]['nom']]
-        jeu = QuoridorX(joueur)
-        while 1:
-            (coup, pos) = jeu.jouer_coup(1)
-            jeu.afficher()
-            état = jouer_coup(identifiant, coup, tuple(pos))
-            joueur1 = état['joueurs']
-            murs_j1 = état['murs']
-            jeu = QuoridorX(joueur1, murs_j1)
+        mode_automatique_graphique(idul)
 
 ARGS = analyser_commande()
 quoridorgame(ARGS)

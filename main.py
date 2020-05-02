@@ -163,6 +163,7 @@ def afficher_damier_ascii(grille):
 
 
 def mode_manuel(idul):
+    """mode manuel"""
     etat_jeu = initialiser_partie(idul)
     print(afficher_damier_ascii(etat_jeu[1]))
     print('Quel coup désirer vous jouer ?')
@@ -185,6 +186,7 @@ def mode_manuel(idul):
 
 
 def mode_automatique(idul):
+    """mode automatique"""
     [identifiant, état] = initialiser_partie(idul)
     print(afficher_damier_ascii(état))
     joueur = [état['joueurs'][0]['nom'], état['joueurs'][1]['nom']]
@@ -201,6 +203,7 @@ def mode_automatique(idul):
 
 
 def mode_manuel_graphique(idul):
+    """mode manuel graphique"""
     [identifiant, état] = initialiser_partie(idul)
     joueur = état['joueurs']
     murs = état['murs']
@@ -226,6 +229,7 @@ def mode_manuel_graphique(idul):
 
 
 def mode_automatique_graphique(idul):
+    """mode atomatique graphique"""
     [identifiant, état] = initialiser_partie(idul)
     joueur = [état['joueurs'][0]['nom'], état['joueurs'][1]['nom']]
     jeu = QuoridorX(joueur)
